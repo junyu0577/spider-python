@@ -23,17 +23,17 @@ class JsSpiderSpider(scrapy.Spider):
             print("--------over--------")
             return
 
-        print("--------第" + str(page) + "页--------")
+        print("--------第" + str(page-1) + "页--------")
 
         for item in article_list:
             js_item = JianshuspiderItem()
             js_item['title'] = item.xpath('./a/text()').extract_first()
             js_item['author'] = item.xpath('./div/a/text()').extract_first()
             js_item['link'] = "https://www.jianshu.com" + item.xpath('./a/@href').extract_first()
-
-            print(js_item['title'], end='    ')
-            print(js_item['author'], end='    ')
-            print(js_item['link'])
+            yield js_item
+            # print(js_item['title'], end='    ')
+            # print(js_item['author'], end='    ')
+            # print(js_item['link'])
 
         yield scrapy.Request(
             "https://www.jianshu.com/c/9ca077f0fae8?order_by=added_at&page=" + str(page),
